@@ -18,18 +18,6 @@ class SearchBooks extends Component {
     query: ''
   }
 
-  updatedSearch = (query) => {
-
-  	BooksAPI.search(query, 20).then((results) => {
-  		if (results.error) {
-  			console.log(results.error)
-  		} else {
-  			this.setState({ books: results })
-  		}
-  	})
-  }
-
-
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
 
