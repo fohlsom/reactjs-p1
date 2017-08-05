@@ -4,21 +4,42 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
+import * as BooksAPI from './BooksAPI'
 
 
 
 class SearchBooks extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired,
-    // onDeleteContact: PropTypes.func.isRequired
+    books: PropTypes.array.isRequired
   }
 
   state = {
+    books: [],
     query: ''
   }
 
+  updatedSearch = (query) => {
+
+  	BooksAPI.search(query, 20).then((results) => {
+  		if (results.error) {
+  			console.log(results.error)
+  		} else {
+  			this.setState({ books: results })
+  		}
+  	})
+  }
+
+
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
+
+    BooksAPI.search(query, 20).then((results) => {
+  		if (results.error) {
+  			console.log(results.error)
+  		} else {
+  			this.setState({ books: results })
+  		}
+  	})
   }
 
   clearQuery = () => {
@@ -27,8 +48,7 @@ class SearchBooks extends Component {
 
   render() {
 
-    const { books } = this.props
-    const { query } = this.state
+  	const { query, books } = this.state    
 
     return (
       <div className="search-books">
@@ -38,7 +58,7 @@ class SearchBooks extends Component {
             <input 
             	type="text" 
             	placeholder="Search by title or author"
-            	value={this.state.query}
+            	value={query}
             	onChange={(event) => this.updateQuery(event.target.value)}
             />
             
@@ -48,8 +68,7 @@ class SearchBooks extends Component {
           <ol className="books-grid">
           	{books.map((book) => (
           		<li key={book.id}>
-          			<p>{book.title}</p>
-          			<p>{book.authors[0]}</p>
+          			<div className="book-title">{book.title}</div>
           		</li>
           	))}
 
