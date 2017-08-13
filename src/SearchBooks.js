@@ -36,7 +36,7 @@ class SearchBooks extends Component {
 
   render() {
 
-  	const { query, books } = this.state
+    const { query, books } = this.state
 
     return (
       <div className="search-books">
