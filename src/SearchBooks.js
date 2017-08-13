@@ -2,8 +2,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
+// import escapeRegExp from 'escape-string-regexp'
+// import sortBy from 'sort-by'
 import * as BooksAPI from './BooksAPI'
 
 
@@ -21,22 +21,22 @@ class SearchBooks extends Component {
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
 
-    BooksAPI.search(query, 20).then((results) => {
-  		if (results.error) {
-  			console.log(results.error)
-  		} else {
-  			this.setState({ books: results })
-  		}
-  	})
-  }
-
-  clearQuery = () => {
-    this.setState({ query: ''})
+    if (query.length > 0) {
+      BooksAPI.search(query, 20).then((results) => {
+        if (results.error) {
+          console.log("Error message: " + results.error)
+          this.setState( {books: [] });
+        } else {
+          this.setState({ books: results })
+        }
+      })      
+    }
+    return 
   }
 
   render() {
 
-  	const { query, books } = this.state    
+  	const { query, books } = this.state
 
     return (
       <div className="search-books">
@@ -59,7 +59,7 @@ class SearchBooks extends Component {
           			<div className='book'>
           				<div className='book-top'>
 	          				<div className="book-cover"
-	          					style={{ width: 128, height: 193, backgroundImage: `url(${book.thumbnail})` }}></div>
+	          					style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
 	          				<div className={`book-shelf-status ${book.shelf}`}></div>
 	          				<div className="book-shelf-changer">
 					            <select value={this.state.value} onChange={this.handleChange}>
@@ -71,6 +71,7 @@ class SearchBooks extends Component {
 					            </select>
 					          </div>
 	          			</div>
+                  <div className="book-title">{ book.title }</div>
 	          		</div>
           		</li>
           	))}
