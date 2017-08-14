@@ -1,9 +1,6 @@
-// import React from 'react'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import escapeRegExp from 'escape-string-regexp'
-// import sortBy from 'sort-by'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book';
 
@@ -11,12 +8,19 @@ import Book from './Book';
 
 class SearchBooks extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired
+    books: PropTypes.array.isRequired,
+    onUpdateBook: PropTypes.func.isRequired
   }
 
   state = {
     books: [],
     query: ''
+  }
+
+  componentWillReceiveProps(nextProps) {    
+    let books = this.state.books;
+    this.updateShelfValues(nextProps.books, books);
+    this.setState( {books: books} );
   }
 
   updateQuery = (query) => {
@@ -28,12 +32,26 @@ class SearchBooks extends Component {
           console.log("Error message: " + results.error)
           this.setState( {books: [] });
         } else {
+          this.updateShelfValues(this.props.books, results);
           this.setState({ books: results })
         }
       })      
     }
     return 
   }
+
+  updateShelfValues = (booksInProp, booksInResults) => {
+
+    booksInResults.forEach((b) => {
+      b.shelf = 'none';
+      for (var i = 0; i < booksInProp.length; i++) {
+        if (b.id === booksInProp[i].id) {
+          b.shelf = booksInProp[i].shelf;
+        }
+      }
+    });
+  }
+
 
   render() {
 
@@ -57,7 +75,7 @@ class SearchBooks extends Component {
           <ol className="books-grid">
           	{books.map((book) => (
           		<li key={book.id}>
-                 <Book data={book}></Book>
+                 <Book data={book} onUpdateBook={this.props.onUpdateBook}></Book>
           		</li>
           	))}
 

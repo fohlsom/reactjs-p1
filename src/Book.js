@@ -12,7 +12,7 @@ class Book extends Component {
 
   static propTypes = {
     data: PropTypes.object.isRequired,
-    // onUpdateBook: PropTypes.func.isRequired
+    onUpdateBook: PropTypes.func.isRequired
   }
 
   handleChange = (e) => {
