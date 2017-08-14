@@ -14,6 +14,7 @@ class BooksApp extends React.Component {
     this.getBooks()
   }
 
+  // Gets all the books from the backend
   getBooks = () => {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
@@ -21,6 +22,7 @@ class BooksApp extends React.Component {
     })    
   }
 
+  // Updates the shelf value of the book
   updateBook = (book, shelf) => {
     BooksAPI.update(book, shelf).then((b) => {
       this.getBooks();

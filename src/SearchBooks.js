@@ -17,12 +17,14 @@ class SearchBooks extends Component {
     query: ''
   }
 
+  // Update the shelf state when props have changed
   componentWillReceiveProps(nextProps) {    
     let books = this.state.books;
     this.updateShelfValues(nextProps.books, books);
     this.setState( {books: books} );
   }
 
+  // Update the search query
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
 
@@ -40,6 +42,7 @@ class SearchBooks extends Component {
     return 
   }
 
+  // Updates the shelf value for the books in the search
   updateShelfValues = (booksInProp, booksInResults) => {
 
     booksInResults.forEach((b) => {

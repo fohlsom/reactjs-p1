@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Book from './Book';
 
 function Bookshelf (props) {
+
+  // Coponent to hold the bookshelf.
   return (
     <div className='bookshelf'>
       <h2 className='bookshelf-title'>

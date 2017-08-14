@@ -7,7 +7,6 @@ class Book extends Component {
     super(props);
     let shelf = props.data.shelf || 'none';
     this.state = {value: shelf};
-    console.log(`${props.data.title} is on shelf '${shelf}'`);
   }
 
   static propTypes = {
@@ -15,6 +14,7 @@ class Book extends Component {
     onUpdateBook: PropTypes.func.isRequired
   }
 
+  // Update the shelf state based on what the user selected
   handleChange = (e) => {
     let shelf = e.target.value;
     this.setState( {value: shelf} );
